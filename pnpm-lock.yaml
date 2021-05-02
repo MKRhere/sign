@@ -5,12 +5,14 @@ specifiers:
   dotenv: ^8.2.0
   express: ^4.17.1
   mongoose: ^5.12.7
+  nodemailer: ^6.6.0
 
 dependencies:
   body-parser: 1.19.0
   dotenv: 8.2.0
   express: 4.17.1
   mongoose: 5.12.7
+  nodemailer: 6.6.0
 
 packages:
 
@@ -397,6 +399,11 @@ packages:
   /negotiator/0.6.2:
     resolution: {integrity: sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /nodemailer/6.6.0:
+    resolution: {integrity: sha512-ikSMDU1nZqpo2WUPE0wTTw/NGGImTkwpJKDIFPZT+YvvR9Sj+ze5wzu95JHkBMglQLoG2ITxU21WukCC/XsFkg==}
+    engines: {node: '>=6.0.0'}
     dev: false
 
   /on-finished/2.3.0:
