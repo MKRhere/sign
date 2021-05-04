@@ -1,5 +1,5 @@
-const Document = ({ Schema, model }) => {
-	const Signature = new Schema({
+const Document = mongoose => {
+	const Signature = new mongoose.Schema({
 		name: String,
 		sign: String,
 		font: String,
@@ -9,14 +9,14 @@ const Document = ({ Schema, model }) => {
 		required: Boolean,
 	});
 
-	const Document = model(
+	const Document = mongoose.model(
 		"document",
-		new Schema({
+		new mongoose.Schema({
 			template: String,
 			name: String,
 			sender: String,
 			void: Boolean,
-			context: Schema.Types.Mixed,
+			context: mongoose.Schema.Types.Mixed,
 			signatures: [Signature],
 			mailsSentAt: Date,
 			created: Date,
