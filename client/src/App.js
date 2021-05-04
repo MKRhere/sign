@@ -32,7 +32,7 @@ function App() {
 				<Route path="/documents">
 					<Dashboard />
 				</Route>
-				<Route path="/new">
+				<Route path="/create">
 					<Create />
 				</Route>
 				<Route path="/sign/:id">
