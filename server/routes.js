@@ -4,9 +4,16 @@ const alphanumberic = new Set(
 	"abcdefghijklmnopqrstuvwxyz0123456789_-".split(""),
 );
 
-const routes = ({ server, db, mailers }) => {
+const routes = ({ config, server, db, mailers }) => {
+	const auth = simpleAuth(config.MASTER_PASS);
+
+	// verify password
+	server.get("/verify", auth, async (req, res) =>
+		res.send({ msg: "Verified" }),
+	);
+
 	// list documents
-	server.get("/document", simpleAuth, async (req, res) => {
+	server.get("/document", auth, async (req, res) => {
 		const docs = await db.Document.find(
 			{},
 			"template name created signatures",
@@ -16,14 +23,14 @@ const routes = ({ server, db, mailers }) => {
 	});
 
 	// delete specified document
-	server.delete("/document/:id", simpleAuth, async (req, res) => {
+	server.delete("/document/:id", auth, async (req, res) => {
 		await db.Document.deleteOne({ _id: req.params.id });
 
 		res.send({ msg: "Deleted one document." });
 	});
 
 	// create document
-	server.post("/document", simpleAuth, async (req, res) => {
+	server.post("/document", auth, async (req, res) => {
 		const { template, name, sender, context, signatures } = req.body;
 
 		try {
@@ -43,7 +50,7 @@ const routes = ({ server, db, mailers }) => {
 	});
 
 	// void specified document
-	server.put("/document/void/:id", simpleAuth, async (req, res) => {
+	server.put("/document/void/:id", auth, async (req, res) => {
 		try {
 			const doc = await db.Document.findOneAndUpdate(
 				{
@@ -84,9 +91,9 @@ const routes = ({ server, db, mailers }) => {
 	});
 
 	// send emails do signatories
-	server.post("/document/send/:id", simpleAuth, async (req, res) => {
+	server.post("/document/send/:id", auth, async (req, res) => {
 		const { emails = [] } = req.body;
-		const origin = req.headers["Origin"];
+		const origin = req.headers["origin"];
 
 		const doc = await db.Document.findOne({ _id: req.params.id });
 
@@ -139,7 +146,7 @@ const routes = ({ server, db, mailers }) => {
 	server.put("/document/sign/:id", async (req, res) => {
 		const { signId } = req.query;
 		const { name, sign, font, mode, pdf } = req.body;
-		const origin = req.headers["Origin"];
+		const origin = req.headers["origin"];
 
 		const doc = await db.Document.findOne({ _id: req.params.id });
 

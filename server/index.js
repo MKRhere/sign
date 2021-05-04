@@ -2,6 +2,7 @@ const CONFIG = require("../config.json");
 
 const { resolve } = require("path");
 const express = require("express");
+const cors = require("cors");
 const { json } = require("body-parser");
 
 const createDB = require("./database");
@@ -13,6 +14,13 @@ const port = CONFIG.PORT || process.env.PORT || 4000;
 
 async function main() {
 	app.use(express.static(resolve(__dirname, "../public")));
+
+	app.use(
+		cors({
+			origin: "http://localhost:3000",
+		}),
+	);
+
 	app.use(json());
 
 	// --
@@ -25,7 +33,7 @@ async function main() {
 		return acc;
 	}, {});
 
-	routes({ server: app, db, mailers });
+	routes({ config: CONFIG, server: app, db, mailers });
 
 	// --
 
